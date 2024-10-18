@@ -1,5 +1,6 @@
 package com.AngryBirds.lwjgl3;
 
+import com.AngryBirds.PausePage;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.AngryBirds.Main;
