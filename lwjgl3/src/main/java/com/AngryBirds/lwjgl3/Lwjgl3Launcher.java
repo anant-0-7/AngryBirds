@@ -1,11 +1,8 @@
 package com.AngryBirds.lwjgl3;
 
-import com.AngryBirds.LevelPage;
-import com.AngryBirds.MainTop;
-import com.AngryBirds.PausePage;
+import com.AngryBirds.*;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.AngryBirds.Main;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
@@ -15,7 +12,7 @@ public class Lwjgl3Launcher {
     }
 
     private static Lwjgl3Application createApplication() {
-        return new Lwjgl3Application(new MainTop(), getDefaultConfiguration());
+        return new Lwjgl3Application(new LoseGame(), getDefaultConfiguration());
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {

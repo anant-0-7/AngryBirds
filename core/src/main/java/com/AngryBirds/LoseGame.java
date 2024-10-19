@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class PausePage extends ApplicationAdapter {
+public class LoseGame extends ApplicationAdapter {
     private Stage stage;
     private Skin skin;
     private Table table;
@@ -22,7 +22,7 @@ public class PausePage extends ApplicationAdapter {
     @Override
     public void create() {
         image = new Texture("background2.jpg");
-        pimage = new Texture("pimage.png");
+        pimage = new Texture("Level-Failed.png");
         stage=new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         table=new Table();
@@ -30,17 +30,17 @@ public class PausePage extends ApplicationAdapter {
         table.align(Align.center|Align.top);
         table.setPosition(0,Gdx.graphics.getHeight());
         skin = new Skin(Gdx.files.internal("uiskin.json"));
-        final TextButton resumeButton =new TextButton("Resume",skin,"default");
-        final TextButton newButton =new TextButton("Save Game",skin,"default");
-        final TextButton loadButton =new TextButton("Restart",skin,"default");
+        final TextButton loadButton =new TextButton("Retry Again",skin,"default");
         final TextButton quitButton =new TextButton("Quit Game",skin,"default");
+        loadButton.getLabel().setFontScale(1.1f);
+        loadButton.pad(20);
+        loadButton.getLabel().setColor(0,0,0,1);
+        quitButton.getLabel().setFontScale(1.1f);
+        quitButton.getLabel().setColor(0,0,0,1);
+        quitButton.pad(20);
         Image img = new Image(image);
         Image pimg = new Image(pimage);
-        table.padTop(100);
-        table.add(resumeButton).padBottom(30);
-        table.row();
-        table.add(newButton).padBottom(30);
-        table.row();
+        table.padTop(150);
         table.add(loadButton).padBottom(30);
         table.row();
         table.add(quitButton);
