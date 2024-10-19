@@ -4,65 +4,73 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
-public class LevelPage extends ScreenAdapter{
+public class LevelPage extends ScreenAdapter {
     private Skin skin;
     private Stage stage;
-    private Table table;
-    private Texture image;
-    private Texture pimage;
+    private Texture backgroundTexture;
+    private Texture headingTexture;
     private MainTop game;
 
-
-    public LevelPage(MainTop game){
-        this.game=game;
+    public LevelPage(MainTop game) {
+        this.game = game;
     }
+
     @Override
     public void show() {
-        image = new Texture("angryBirds1.jpg");
-        pimage = new Texture("limage.png");
-        stage=new Stage(new ScreenViewport());
+        backgroundTexture = new Texture("background2.jpg");
+        headingTexture = new Texture("level_selection.png");
+
+        stage = new Stage(new FitViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
-        table=new Table();
+
+        Table table = new Table();
         table.setWidth(stage.getWidth());
-        table.align(Align.left);
-        table.setPosition(0,Gdx.graphics.getHeight());
+        table.align(Align.center | Align.top);
+        table.setPosition(0, Gdx.graphics.getHeight());
+
         skin = new Skin(Gdx.files.internal("uiskin.json"));
-        Texture t1=new Texture(Gdx.files.internal("level1.png"));
-        Drawable drawable=new TextureRegionDrawable(new TextureRegion(t1));
-        ImageButton levelOne =new ImageButton(drawable);
-        Texture t2=new Texture(Gdx.files.internal("level2.png"));
-        Drawable drawable2=new TextureRegionDrawable(new TextureRegion(t2));
-        ImageButton levelTwo =new ImageButton(drawable2);
-        Texture t3=new Texture(Gdx.files.internal("level3.png"));
-        Drawable drawable3=new TextureRegionDrawable(new TextureRegion(t3));
-        ImageButton levelThree =new ImageButton(drawable3);
-        Image img = new Image(image);
-        Image pimg = new Image(pimage);
-        levelOne.setHeight(50);
-        levelOne.setWidth(50);
-        table.padTop(370);
-        table.padLeft(30);
-        table.add(levelOne).padRight(20);
-        table.add(levelTwo).padRight(25);
-        table.add(levelThree).padRight(15);
+        ImageButton levelOne = createLevelButton("level1.png");
+        ImageButton levelTwo = createLevelButton("level2.png");
+        ImageButton levelThree = createLevelButton("level3.png");
 
+        table.padTop(150);
+        table.add(levelOne).padRight(30);
+        table.add(levelTwo).padRight(30);
+        table.add(levelThree);
 
-        img.setPosition(0, 0);
-        pimg.setPosition(stage.getWidth()/2-100, stage.getHeight()-100);
-        pimg.setSize(stage.getWidth()/3, stage.getHeight()/5);
-        stage.addActor(img);
-        stage.addActor(pimg);
+        Image headingImage = new Image(headingTexture);
+        headingImage.setSize(headingTexture.getWidth() * 0.5f, headingTexture.getHeight() * 0.5f);
+        headingImage.setPosition((stage.getWidth() - headingImage.getWidth()) / 2, stage.getHeight() - headingImage.getHeight() - 50);
+
+        Image backgroundImage = new Image(backgroundTexture);
+        backgroundImage.setSize(stage.getWidth(), stage.getHeight());
+        backgroundImage.setPosition(0, 0);
+
+        stage.addActor(backgroundImage);
+        stage.addActor(headingImage);
         stage.addActor(table);
+    }
 
-
-
+    private ImageButton createLevelButton(String texturePath) {
+        Texture levelTexture = new Texture(Gdx.files.internal(texturePath));
+        Drawable drawable = new TextureRegionDrawable(new TextureRegion(levelTexture));
+        ImageButton button = new ImageButton(drawable);
+        button.setSize(100, 100);
+        button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            }
+        });
+        return button;
     }
 
     @Override
@@ -72,10 +80,11 @@ public class LevelPage extends ScreenAdapter{
         stage.draw();
     }
 
-
     @Override
     public void dispose() {
-        image.dispose();
+        backgroundTexture.dispose();
+        headingTexture.dispose();
         stage.dispose();
+        skin.dispose();
     }
 }

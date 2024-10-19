@@ -1,0 +1,45 @@
+{
+  "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+    "default-font": { "file": "default.fnt" } // Ensure you have a suitable font
+  },
+  "com.badlogic.gdx.graphics.Color": {
+    "white": { "a": 1, "b": 1, "g": 1, "r": 1 },
+    "red": { "a": 1, "b": 0, "g": 0, "r": 1 },
+    "green": { "a": 1, "b": 0, "g": 1, "r": 0 },
+    "black": { "a": 1, "b": 0, "g": 0, "r": 0 },
+    "lightGray": { "a": 1, "b": 0.8, "g": 0.8, "r": 0.8 }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+    "default": {
+      "up": { "color": "lightGray" },
+      "down": { "color": "red" }
+    },
+    "toggle": {
+      "up": { "color": "lightGray" },
+      "down": { "color": "red" },
+      "checked": { "color": "green" }
+    }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+    "default": {
+      "up": { "color": "lightGray" },
+      "down": { "color": "red" },
+      "font": "default-font",
+      "fontColor": "black"
+    },
+    "toggle": {
+      "up": { "color": "lightGray" },
+      "down": { "color": "red" },
+      "checked": { "color": "green" },
+      "font": "default-font",
+      "fontColor": "black",
+      "downFontColor": "white"
+    }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+    "default": {
+      "font": "default-font",
+      "fontColor": "black"
+    }
+  }
+}
