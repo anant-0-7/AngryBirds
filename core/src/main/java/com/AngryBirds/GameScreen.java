@@ -3,13 +3,15 @@ package com.AngryBirds;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-public class GameScreen extends ApplicationAdapter {
+public class GameScreen extends ScreenAdapter {
 
     private Stage stage;
     private Texture image;
@@ -22,9 +24,14 @@ public class GameScreen extends ApplicationAdapter {
     private Texture GlassSquare;
     private Texture pig;
     private Texture pauseButtonTexture;
+    private MainTop game;
+
+    public GameScreen(MainTop game) {
+        this.game = game;
+    }
 
     @Override
-    public void create() {
+    public void show() {
         // Load textures
         image = new Texture("gameBackground.jpg");
         redBirdTexture = new Texture("redbird.png");
@@ -101,6 +108,19 @@ public class GameScreen extends ApplicationAdapter {
         p.setSize(80, 80); // Adjust size for the pig
         p.setPosition(1380, 345); // Above WoodSquare and GlassSquare
 
+        pauseButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new PausePage(game));
+            }
+        });
+        redBird.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new LoseGame(game));
+            }
+        });
+
         // Add actors to the stage
         stage.addActor(background);
         stage.addActor(redBird);
@@ -119,7 +139,7 @@ public class GameScreen extends ApplicationAdapter {
     }
 
     @Override
-    public void render() {
+    public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();

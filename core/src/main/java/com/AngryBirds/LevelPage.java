@@ -54,6 +54,12 @@ public class LevelPage extends ScreenAdapter {
         Image backgroundImage = new Image(backgroundTexture);
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         backgroundImage.setPosition(0, 0);
+        levelOne.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new GameScreen(game));
+            }
+        });
 
         stage.addActor(backgroundImage);
         stage.addActor(headingImage);

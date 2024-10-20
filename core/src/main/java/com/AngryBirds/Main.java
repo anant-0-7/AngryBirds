@@ -58,6 +58,12 @@ public class Main extends ScreenAdapter {
                 next = true;
             }
         });
+        quitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
 
         Image img = new Image(image);
         img.setSize(stage.getWidth(), stage.getHeight());
