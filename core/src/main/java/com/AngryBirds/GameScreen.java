@@ -24,6 +24,7 @@ public class GameScreen extends ScreenAdapter {
     private Texture GlassSquare;
     private Texture pig;
     private Texture pauseButtonTexture;
+    private Texture backButtonTexture;
     private MainTop game;
 
     public GameScreen(MainTop game) {
@@ -40,6 +41,7 @@ public class GameScreen extends ScreenAdapter {
         slingShotTexture = new Texture("slingshot.png");
 
         pauseButtonTexture = new Texture("pauseButton.png");
+        backButtonTexture = new Texture("bB.png");
         Texture headingTexture = new Texture("angry-birds-logo.png");
 
         WoodRod = new Texture("woodRod.png");
@@ -66,14 +68,20 @@ public class GameScreen extends ScreenAdapter {
         // Create TextureRegionDrawable for ImageButton (pause button)
         TextureRegionDrawable pauseButtonDrawable = new TextureRegionDrawable(pauseButtonTexture);
         ImageButton pauseButton = new ImageButton(pauseButtonDrawable);
+        TextureRegionDrawable backButtonDrawable = new TextureRegionDrawable(backButtonTexture);
+        ImageButton backButton = new ImageButton(backButtonDrawable);
 
         headingImage.setSize(headingTexture.getWidth() * 0.5f, headingTexture.getHeight() * 0.5f);
         headingImage.setPosition((stage.getWidth() - headingImage.getWidth()) / 2, stage.getHeight() - headingImage.getHeight() - 20);
 
-        // Set pause button size and position next to the heading on the right side
-        pauseButton.setSize(200, 200); // Adjust the size of the pause button
-        pauseButton.setPosition(headingImage.getX() + headingImage.getWidth() + 20, headingImage.getY() + (headingImage.getHeight() - pauseButton.getHeight()) / 2); // Position it beside the heading
+        backButton.setSize(150, 150);
+        pauseButton.setSize(150, 150);
 
+// Position backButton to the left of headingImage
+        backButton.setPosition(headingImage.getX() - backButton.getWidth() - 20, headingImage.getY() + (headingImage.getHeight() - backButton.getHeight()) / 2);
+
+// Position pauseButton to the right of headingImage
+        pauseButton.setPosition(headingImage.getX() + headingImage.getWidth() + 20, headingImage.getY() + (headingImage.getHeight() - pauseButton.getHeight()) / 2);
         // Set background size and position
         background.setSize(stage.getWidth(), stage.getHeight());
         background.setPosition(0, 0);
@@ -114,6 +122,12 @@ public class GameScreen extends ScreenAdapter {
                 game.setScreen(new PausePage(game));
             }
         });
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new Main(game));
+            }
+        });
         redBird.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -128,7 +142,8 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(blackBird);
         stage.addActor(slingShot);
         stage.addActor(headingImage);
-        stage.addActor(pauseButton); // Add the pause button
+        stage.addActor(pauseButton);
+        stage.addActor(backButton);// Add the pause button
         stage.addActor(wr); // WoodRod
         stage.addActor(ws); // WoodSquare
         stage.addActor(gs); // GlassSquare

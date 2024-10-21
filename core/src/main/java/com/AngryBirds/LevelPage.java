@@ -38,17 +38,20 @@ public class LevelPage extends ScreenAdapter {
         table.setPosition(0, Gdx.graphics.getHeight());
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
-        ImageButton levelOne = createLevelButton("level1.png");
-        ImageButton levelTwo = createLevelButton("level2.png");
-        ImageButton levelThree = createLevelButton("level3.png");
+        ImageButton levelOne = createLevelButton("l1B.png");
+        ImageButton levelTwo = createLevelButton("l2B.png");
+        ImageButton levelThree = createLevelButton("l3B.png");
+        ImageButton levelFour = createLevelButton("lockB.png");
+        ImageButton levelFive = createLevelButton("lockB.png");
 
         table.padTop(150);
-        table.add(levelOne).padRight(30);
-        table.add(levelTwo).padRight(30);
-        table.add(levelThree);
-
+        table.add(levelOne).size(200,200).padRight(30);
+        table.add(levelTwo).size(200,200).padRight(30);
+        table.add(levelThree).size(200,200).padRight(30);
+        table.add(levelFour).size(200,200).padRight(30);
+        table.add(levelFive).size(200,200);
         Image headingImage = new Image(headingTexture);
-        headingImage.setSize(headingTexture.getWidth() * 0.5f, headingTexture.getHeight() * 0.5f);
+        headingImage.setSize(headingTexture.getWidth() * 1.8f, headingTexture.getHeight() * 1.8f);
         headingImage.setPosition((stage.getWidth() - headingImage.getWidth()) / 2, stage.getHeight() - headingImage.getHeight() - 50);
 
         Image backgroundImage = new Image(backgroundTexture);
@@ -70,7 +73,6 @@ public class LevelPage extends ScreenAdapter {
         Texture levelTexture = new Texture(Gdx.files.internal(texturePath));
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(levelTexture));
         ImageButton button = new ImageButton(drawable);
-        button.setSize(100, 100);
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

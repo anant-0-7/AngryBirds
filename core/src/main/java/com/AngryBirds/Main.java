@@ -4,16 +4,18 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ScreenAdapter {
@@ -30,7 +32,7 @@ public class Main extends ScreenAdapter {
     @Override
     public void show() {
         image = new Texture("background2.jpg");
-        stage = new Stage(new FitViewport(1920, 1080));
+        stage = new Stage(new FitViewport(1600,900));
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();
@@ -40,17 +42,11 @@ public class Main extends ScreenAdapter {
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        final TextButton newButton = new TextButton("New Game", skin, "default");
-        newButton.getLabel().setFontScale(1.5f);
-        newButton.pad(20);
+        ImageButton newButton = createLevelButton("playGame.png");
 
-        final TextButton loadButton = new TextButton("Load Game", skin, "default");
-        loadButton.getLabel().setFontScale(1.5f);
-        loadButton.pad(20);
+        ImageButton loadButton = createLevelButton("LoadGame.png");
 
-        final TextButton quitButton = new TextButton("Quit Game", skin, "default");
-        quitButton.getLabel().setFontScale(1.5f);
-        quitButton.pad(20);
+        ImageButton quitButton = createLevelButton("QuitGame.png");
 
         newButton.addListener(new ClickListener() {
             @Override
@@ -74,16 +70,22 @@ public class Main extends ScreenAdapter {
         headingImage.setSize(headingTexture.getWidth() * 0.5f, headingTexture.getHeight() * 0.5f);
         headingImage.setPosition((stage.getWidth() - headingImage.getWidth()) / 2, stage.getHeight() - headingImage.getHeight() - 20);
 
-        table.padTop(50);
-        table.add(newButton).padBottom(30);
+        table.padTop(250);
+        table.add(newButton).size(500,300);
         table.row();
-        table.add(loadButton).padBottom(30);
+        table.add(loadButton).size(300,150);
         table.row();
-        table.add(quitButton);
+        table.add(quitButton).size(300,150);
 
         stage.addActor(img);
         stage.addActor(headingImage);
         stage.addActor(table);
+    }
+    private ImageButton createLevelButton(String texturePath) {
+        Texture levelTexture = new Texture(Gdx.files.internal(texturePath));
+        Drawable drawable = new TextureRegionDrawable(new TextureRegion(levelTexture));
+        ImageButton button = new ImageButton(drawable);
+        return button;
     }
 
     @Override

@@ -5,13 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -29,7 +29,7 @@ public class LoseGame extends ScreenAdapter {
 
     @Override
     public void show() {
-        image = new Texture("background2.jpg");
+        image = new Texture("lose_background.png");
         pimage = new Texture("Level-Failed.png");
         stage=new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -38,20 +38,14 @@ public class LoseGame extends ScreenAdapter {
         table.align(Align.center|Align.top);
         table.setPosition(0,Gdx.graphics.getHeight());
         skin = new Skin(Gdx.files.internal("uiskin.json"));
-        final TextButton resButton =new TextButton("Retry Again",skin,"default");
-        final TextButton quitButton =new TextButton("Quit Game",skin,"default");
-        resButton.getLabel().setFontScale(1.1f);
-        resButton.pad(20);
-        resButton.getLabel().setColor(0,0,0,1);
-        quitButton.getLabel().setFontScale(1.1f);
-        quitButton.getLabel().setColor(0,0,0,1);
-        quitButton.pad(20);
+        ImageButton resButton = createLevelButton("rB.png");
+        ImageButton quitButton = createLevelButton("QuitGame.png");
         Image img = new Image(image);
         Image pimg = new Image(pimage);
-        table.padTop(150);
-        table.add(resButton).padBottom(30);
+        table.padTop(300);
+        table.add(resButton).size(350,200).padBottom(30);
         table.row();
-        table.add(quitButton);
+        table.add(quitButton).size(300,200);
 
 
         quitButton.addListener(new ClickListener() {
@@ -69,7 +63,7 @@ public class LoseGame extends ScreenAdapter {
         });
 
         img.setPosition(0, 0);
-        pimg.setPosition(stage.getWidth()/2-100, stage.getHeight()-100);
+        pimg.setPosition(stage.getWidth()/2-200, stage.getHeight()-200);
         pimg.setSize(stage.getWidth()/3, stage.getHeight()/5);
         stage.addActor(img);
         stage.addActor(pimg);
@@ -77,6 +71,12 @@ public class LoseGame extends ScreenAdapter {
 
 
 
+    }
+    private ImageButton createLevelButton(String texturePath) {
+        Texture levelTexture = new Texture(Gdx.files.internal(texturePath));
+        Drawable drawable = new TextureRegionDrawable(new TextureRegion(levelTexture));
+        ImageButton button = new ImageButton(drawable);
+        return button;
     }
 
     @Override
