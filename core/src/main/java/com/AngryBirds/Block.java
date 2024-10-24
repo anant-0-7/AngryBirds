@@ -2,18 +2,35 @@ package com.AngryBirds;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-public class Block {
+public abstract class Block {
     private Texture texture;
-    private Sprite sprite;
     private float x, y;
+
 
     public Block(Texture texture, float x, float y) {
         this.texture = texture;
-        this.sprite = new Sprite(texture);
         this.x = x;
         this.y = y;
-        this.sprite.setPosition(x, y);
     }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public Image getImage() {
+        return new Image(texture);
+    }
+
+    public void dispose(){
+        texture.dispose();
+    }
+
+
 
 }

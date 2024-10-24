@@ -1,17 +1,19 @@
 package com.AngryBirds;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-public class Slingshot {
-    private Texture texture;
-    private float x, y;
+public class Pig {
 
-    public Slingshot(float x, float y) {
-        this.texture = new Texture("slingshot.png");
+    private float x, y;
+    private int health;
+    private Texture texture;
+
+    public Pig(Texture texture, float x, float y) {
         this.x = x;
         this.y = y;
+        this.health = 100;
+        this.texture = texture;
     }
 
     public float getX() {
@@ -26,9 +28,9 @@ public class Slingshot {
         return new Image(texture);
     }
 
+
     public void dispose() {
         texture.dispose();
     }
-
 
 }
