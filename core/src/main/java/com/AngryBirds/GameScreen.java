@@ -81,15 +81,15 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void createGameObjects() {
-        // Add a static ground
-        createStaticBody(0, 220, 19200, 10);
+        createStaticBody(0, 220, 3000, 10);
 
         slingshot = new Slingshot(275, 235);
         redBird = new RedBird(world, 200, 300);
         redBird2 = new RedBird(world, 150, 300);
         redBird3 = new RedBird(world, 100, 300);
+        Texture t=new Texture("woodRod.png");
 
-        woodRod = new WoodRod(world, 1325, 235);
+        woodRod = new WoodRod(world, 1325, 235,t);
         woodSquare = new WoodSquare(world, 1385, 295);
         glassSquare = new GlassSquare(world, 1275, 295);
         pig = new KingPig(world, 1330, 385);
@@ -130,14 +130,13 @@ public class GameScreen extends ScreenAdapter {
         woodSquare.render(spriteBatch);
         glassSquare.render(spriteBatch);
         pig.render(spriteBatch);
-        redBird.updatePosition();
+        redBird.update();
 
-        // Render debug physics outlines (optional)
-        debugRenderer.render(world, stage.getCamera().combined);
 
-        // Draw UI
+
         stage.act();
         stage.draw();
+        debugRenderer.render(world, stage.getCamera().combined);
     }
 
     @Override

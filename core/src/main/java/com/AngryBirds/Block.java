@@ -13,7 +13,7 @@ public abstract class Block {
 
         // Create body definition
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody; // Dynamic body for interaction
+        bodyDef.type = BodyDef.BodyType.KinematicBody; // Use Kinematic or Dynamic based on interaction
         bodyDef.position.set(x / 100f, y / 100f); // Position in meters
 
         // Create the body
@@ -21,14 +21,12 @@ public abstract class Block {
 
         // Define the block's shape
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 200f, height / 200f); // Half-width/height in meters
+        shape.setAsBox(width / 200f, height / 200f); // Half-width and half-height in meters
 
         // Create the fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 1.0f; // Adjust for realistic weight
-        fixtureDef.friction = 0.5f; // Sliding friction
-        fixtureDef.restitution = 0.0f; // Minimal bounce
+        fixtureDef.density = 1.0f;
 
         body.createFixture(fixtureDef);
         shape.dispose(); // Dispose shape to free memory
@@ -36,8 +34,8 @@ public abstract class Block {
 
     public void render(SpriteBatch batch) {
         // Get the position and rotation from the Box2D body
-        float x = body.getPosition().x * 100 - texture.getWidth() / 2;
-        float y = body.getPosition().y * 100 - texture.getHeight() / 2;
+        float x = body.getPosition().x * 100 - texture.getWidth() / 2f;
+        float y = body.getPosition().y * 100 - texture.getHeight() / 2f;
 
         // Draw the texture with position and rotation
         batch.begin();

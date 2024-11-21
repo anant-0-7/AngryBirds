@@ -11,7 +11,9 @@ public class Bird {
     private Texture texture;
     private boolean inSlingshot = true;
     private boolean isDragging = false; // Tracks if bird is being dragged
-    private Vector2 slingshotPosition;  // Position of slingshot
+    private Vector2 slingshotPosition;
+    private boolean isLaunched = false;
+    // Position of slingshot
     private float maxDragDistance = 2.0f; // Max drag distance in meters
 
     public Bird(Texture texture, World world, float x, float y) {
@@ -37,33 +39,48 @@ public class Bird {
         shape.dispose();
     }
 
-    public void updatePosition() {
-        if (inSlingshot) {
+    public void updatePosition1() {
+        // Get the mouse position in screen coordinates
+        float mouseX = Gdx.input.getX();
+        float mouseY = Gdx.input.getY();
+
+        // Convert screen coordinates to world coordinates (Box2D uses meters, screen uses pixels)
+        float worldX = mouseX / 100f; // Convert to meters
+        float worldY = (Gdx.graphics.getHeight() - mouseY) / 100f; // Invert Y-axis and convert to meters
+
+        // Set the bird's position to the mouse's position in world coordinates
+        body.setTransform(worldX, worldY, body.getAngle());
+    }
+
+    public void update() {
+        if (!isLaunched) {
             if (Gdx.input.isTouched()) {
                 float mouseX = Gdx.input.getX() / 100f;
                 float mouseY = (Gdx.graphics.getHeight() - Gdx.input.getY()) / 100f;
                 Vector2 currentMousePosition = new Vector2(mouseX, mouseY);
 
-                if (!isDragging) {
-                    if (currentMousePosition.dst(slingshotPosition) <= maxDragDistance) {
-                        isDragging = true;
-                    }
+                if (!isDragging && currentMousePosition.dst(slingshotPosition) <= maxDragDistance) {
+                    isDragging = true;
                 }
 
+                // Drag bird
                 if (isDragging) {
-                    Vector2 direction = currentMousePosition.sub(slingshotPosition);
-                    if (direction.len() > maxDragDistance) {
-                        direction.nor().scl(maxDragDistance);
-                    }
-                    body.setTransform(slingshotPosition.cpy().add(direction), 0);
-                }
-            } else if (isDragging) {
-                Vector2 dragVector = slingshotPosition.cpy().sub(body.getPosition());
-                Vector2 launchVelocity = dragVector.scl(15f); // Adjust scaling for force
+                    Vector2 dragOffset = currentMousePosition.sub(slingshotPosition);
 
-                body.setLinearVelocity(launchVelocity);
-                inSlingshot = false;
+                    if (dragOffset.len() > maxDragDistance) {
+                        dragOffset.nor().scl(maxDragDistance);
+                    }
+
+                    body.setTransform(slingshotPosition.cpy().add(dragOffset), 0);
+                }
+            }
+            else if (isDragging) {
+                Vector2 launchVector = slingshotPosition.cpy().sub(body.getPosition());
+                float launchIntensity = launchVector.len() * 10f; // Adjust multiplier for desired force
+
+                body.setLinearVelocity(launchVector.nor().scl(launchIntensity));
                 isDragging = false;
+                isLaunched = true;
             }
         }
     }
