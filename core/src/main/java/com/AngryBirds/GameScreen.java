@@ -3,29 +3,33 @@ package com.AngryBirds;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class GameScreen extends ScreenAdapter {
-
     private Stage stage;
-    private Texture image;
-    private RedBird redBirdTexture;
-    private YellowBird yellowBirdTexture;
-    private BlackBird blackBirdTexture;
-    private Slingshot slingShotTexture;
-    private WoodRod WoodRod;
-    private WoodSquare WoodSquare;
-    private GlassSquare GlassSquare;
+    private World world;
+    private Box2DDebugRenderer debugRenderer;
+    private SpriteBatch spriteBatch;
+
+    private Texture backgroundTexture;
+    private Texture pauseButtonTexture, backButtonTexture;
+    private RedBird redBird;
+    private RedBird redBird2;
+    private RedBird redBird3;
+    private WoodRod woodRod;
+    private WoodSquare woodSquare;
+    private GlassSquare glassSquare;
     private Pig pig;
-    private Texture pauseButtonTexture;
-    private Texture backButtonTexture;
     private MainTop game;
+    private Slingshot slingshot;
 
     public GameScreen(MainTop game) {
         this.game = game;
@@ -33,75 +37,30 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        image = new Texture("gameBackground.jpg");
-        redBirdTexture = new RedBird(80, 230);
-        yellowBirdTexture = new YellowBird(170, 230);
-        blackBirdTexture = new BlackBird(270, 230);
-        slingShotTexture = new Slingshot(350, 230);
+        world = new World(new Vector2(0, -9.8f), true);
+        debugRenderer = new Box2DDebugRenderer();
+        spriteBatch = new SpriteBatch();
 
+        backgroundTexture = new Texture("gameBackground.jpg");
         pauseButtonTexture = new Texture("pauseButton.png");
         backButtonTexture = new Texture("bB.png");
-        Texture headingTexture = new Texture("angry-birds-logo.png");
-
-        WoodRod = new WoodRod(1325, 225);
-        WoodSquare = new WoodSquare(1330, 245);
-        GlassSquare = new GlassSquare(1430, 245);
-        pig = new KingPig(1380, 345);
 
         stage = new Stage(new FitViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
 
-        Image background = new Image(image);
-        Image redBird = redBirdTexture.getImage();
-        Image yellowBird = yellowBirdTexture.getImage();
-        Image blackBird = blackBirdTexture.getImage();
+        createButtons();
 
-        Image slingShot = slingShotTexture.getImage();
-        Image headingImage = new Image(headingTexture);
-        Image wr = WoodRod.getImage();
-        Image ws = WoodSquare.getImage();
-        Image gs = GlassSquare.getImage();
-        Image p = pig.getImage();
+        createGameObjects();
+    }
 
-        TextureRegionDrawable pauseButtonDrawable = new TextureRegionDrawable(pauseButtonTexture);
-        ImageButton pauseButton = new ImageButton(pauseButtonDrawable);
-        TextureRegionDrawable backButtonDrawable = new TextureRegionDrawable(backButtonTexture);
-        ImageButton backButton = new ImageButton(backButtonDrawable);
+    private void createButtons() {
+        ImageButton pauseButton = new ImageButton(new TextureRegionDrawable(pauseButtonTexture));
+        ImageButton backButton = new ImageButton(new TextureRegionDrawable(backButtonTexture));
 
-        headingImage.setSize(headingTexture.getWidth() * 0.5f, headingTexture.getHeight() * 0.5f);
-        headingImage.setPosition((stage.getWidth() - headingImage.getWidth()) / 2, stage.getHeight() - headingImage.getHeight() - 20);
-
-        backButton.setSize(150, 150);
         pauseButton.setSize(150, 150);
-
-        backButton.setPosition(headingImage.getX() - backButton.getWidth() - 20, headingImage.getY() + (headingImage.getHeight() - backButton.getHeight()) / 2);
-
-        pauseButton.setPosition(headingImage.getX() + headingImage.getWidth() + 20, headingImage.getY() + (headingImage.getHeight() - pauseButton.getHeight()) / 2);
-        background.setSize(stage.getWidth(), stage.getHeight());
-        background.setPosition(0, 0);
-
-        redBird.setSize(100, 100);
-        yellowBird.setSize(100, 100);
-        blackBird.setSize(100, 100);
-
-        redBird.setPosition(redBirdTexture.getX(), redBirdTexture.getY());
-        yellowBird.setPosition(yellowBirdTexture.getX(), yellowBirdTexture.getY());
-        blackBird.setPosition(blackBirdTexture.getX(), blackBirdTexture.getY());
-
-        slingShot.setSize(200, 250);
-        slingShot.setPosition(slingShotTexture.getX(), slingShotTexture.getY());
-
-        wr.setSize(200, 20);
-        wr.setPosition(WoodRod.getX(), WoodRod.getY());
-
-        ws.setSize(100, 100);
-        ws.setPosition(WoodSquare.getX(), WoodSquare.getY());
-
-        gs.setSize(100, 100);
-        gs.setPosition(GlassSquare.getX(), GlassSquare.getY());
-
-        p.setSize(80, 80);
-        p.setPosition(pig.getX(), pig.getY());
+        backButton.setSize(150, 150);
+        pauseButton.setPosition(1700, 900);
+        backButton.setPosition(100, 900);
 
         pauseButton.addListener(new ClickListener() {
             @Override
@@ -109,54 +68,87 @@ public class GameScreen extends ScreenAdapter {
                 game.setScreen(new PausePage(game));
             }
         });
+
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new Main(game));
             }
         });
-        redBird.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new LoseGame(game));
-            }
-        });
 
-        stage.addActor(background);
-        stage.addActor(redBird);
-        stage.addActor(yellowBird);
-        stage.addActor(blackBird);
-        stage.addActor(slingShot);
-        stage.addActor(headingImage);
         stage.addActor(pauseButton);
         stage.addActor(backButton);
-        stage.addActor(wr);
-        stage.addActor(ws);
-        stage.addActor(gs);
-        stage.addActor(p);
+    }
+
+    private void createGameObjects() {
+        // Add a static ground
+        createStaticBody(0, 220, 19200, 10);
+
+        redBird = new RedBird(world, 200, 300);
+        redBird2 = new RedBird(world, 150, 300);
+        redBird3 = new RedBird(world, 100, 300);
+        slingshot = new Slingshot(275, 235);
+
+        woodRod = new WoodRod(world, 1325, 235);
+        woodSquare = new WoodSquare(world, 1385, 295);
+        glassSquare = new GlassSquare(world, 1275, 295);
+        pig = new KingPig(world, 1330, 385);
 
 
+    }
+
+    private void createStaticBody(float x, float y, float width, float height) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.position.set(x / 100f, y / 100f); // Convert to meters
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+
+        Body body = world.createBody(bodyDef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(width / 200f, height / 200f); // Convert to meters
+
+        body.createFixture(shape, 0.0f);
+        shape.dispose();
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(Gdx.graphics.getDeltaTime());
+
+        // Step the physics simulation
+        world.step(1 / 60f, 6, 2);
+
+        // Render background
+        spriteBatch.begin();
+        spriteBatch.draw(backgroundTexture, 0, 0, 1920, 1080);
+        spriteBatch.end();
+
+        // Render game objects
+        redBird.render(spriteBatch);
+        redBird2.render(spriteBatch);
+        redBird3.render(spriteBatch);
+        slingshot.render(spriteBatch);
+        woodRod.render(spriteBatch);
+        woodSquare.render(spriteBatch);
+        glassSquare.render(spriteBatch);
+        pig.render(spriteBatch);
+
+        // Render debug physics outlines (optional)
+        debugRenderer.render(world, stage.getCamera().combined);
+
+        // Draw UI
+        stage.act();
         stage.draw();
     }
 
     @Override
     public void dispose() {
-        image.dispose();
-        redBirdTexture.dispose();
-        yellowBirdTexture.dispose();
-        blackBirdTexture.dispose();
-        slingShotTexture.dispose();
-        WoodRod.dispose();
-        WoodSquare.dispose();
-        GlassSquare.dispose();
-        pig.dispose();
+        world.dispose();
+        debugRenderer.dispose();
+        spriteBatch.dispose();
+        backgroundTexture.dispose();
         pauseButtonTexture.dispose();
+        backButtonTexture.dispose();
         stage.dispose();
     }
 }

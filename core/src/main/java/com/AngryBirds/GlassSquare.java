@@ -1,10 +1,11 @@
 package com.AngryBirds;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class GlassSquare extends Block {
 
-    public GlassSquare(float x, float y) {
-        super(new Texture("glassSquare.png"), x, y);
+    public GlassSquare(World world, float x, float y){
+        super(world, new Texture("glassSquare.png"), x, y, 50, 50);
     }
 }

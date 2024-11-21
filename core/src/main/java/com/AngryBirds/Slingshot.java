@@ -1,7 +1,7 @@
 package com.AngryBirds;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class Slingshot {
@@ -10,25 +10,18 @@ public class Slingshot {
 
     public Slingshot(float x, float y) {
         this.texture = new Texture("slingshot.png");
+        // Load the slingshot texture
         this.x = x;
         this.y = y;
     }
 
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public Image getImage() {
-        return new Image(texture);
+    public void render(SpriteBatch spriteBatch) {
+        spriteBatch.begin();
+        spriteBatch.draw(texture, x, y, 200, 250); // Draw the slingshot at the specified position
+        spriteBatch.end();
     }
 
     public void dispose() {
-        texture.dispose();
+        texture.dispose(); // Clean up the texture
     }
-
-
 }
