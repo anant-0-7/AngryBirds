@@ -7,10 +7,15 @@ import com.badlogic.gdx.physics.box2d.*;
 public class Pig {
     private Body body;
     private Texture texture;
+    int health;
+    World world;
+    boolean isMarkedDestructed=false;
 
-    public Pig(Texture texture, World world, float x, float y) {
+    public Pig(Texture texture, World world, float x, float y,int health) {
         // Load pig texture
         this.texture = texture;
+        this.health=health;
+        this.world=world;
 
         // Define body
         BodyDef bodyDef = new BodyDef();
@@ -27,11 +32,19 @@ public class Pig {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0.6f; // Lower density for lighter weight
-        fixtureDef.restitution = 0.3f; // Slight bounce
-        fixtureDef.friction = 0.5f; // Add some friction
+
 
         body.createFixture(fixtureDef);
+        body.setUserData(this);
         shape.dispose(); // Dispose shape to free resources
+    }
+    public void healthReduce(int strength){
+        this.health-=strength;
+        if(health<=0){
+            this.markForDestruction();
+        }
+        System.out.println("Pig health is:"+health);
+
     }
 
     public void render(SpriteBatch spriteBatch) {
@@ -40,8 +53,27 @@ public class Pig {
         spriteBatch.end();
     }
 
+    public void markForDestruction() {
+        isMarkedDestructed = true;
+    }
+
+    public boolean isMarkedForDestruction() {
+        return isMarkedDestructed;
+    }
+
+    public void safelyDestroy(World world) {
+        if (isMarkedDestructed && body != null) {
+            world.destroyBody(body);
+            body = null; // Prevent further access
+        }
+    }
+
     public void dispose() {
-        texture.dispose(); // Dispose texture to free resources
+        // Dispose of the texture when the bird is no longer needed
+        if (texture != null) {
+            texture.dispose();
+            texture = null;
+        }
     }
 
     public Body getBody() {

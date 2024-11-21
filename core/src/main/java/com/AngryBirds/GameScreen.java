@@ -38,6 +38,9 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
+        ContactListner c=new ContactListner();
+        c.world=world;
+        world.setContactListener(c);
         debugRenderer = new Box2DDebugRenderer();
         spriteBatch = new SpriteBatch();
 
@@ -81,12 +84,14 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void createGameObjects() {
-        createStaticBody(0, 220, 3000, 10);
+        createStaticBody(0, 220, 10000, 10);
+        createStaticBody(400,350 , 5, 0);
 
         slingshot = new Slingshot(275, 235);
         redBird = new RedBird(world, 200, 300);
         redBird2 = new RedBird(world, 150, 300);
         redBird3 = new RedBird(world, 100, 300);
+        redBird.updatePosition();
         Texture t=new Texture("woodRod.png");
 
         woodRod = new WoodRod(world, 1325, 235,t);
@@ -122,15 +127,62 @@ public class GameScreen extends ScreenAdapter {
         spriteBatch.begin();
         spriteBatch.draw(backgroundTexture, 0, 0, 1920, 1080);
         spriteBatch.end();
+        if(redBird.getBody()!=null) {
+
+            if (redBird.isMarkedDestructed) {
+                redBird.safelyDestroy(world);
+                redBird.dispose();
+
+            } else {
+                redBird.update();
+                redBird.render(spriteBatch);
+            }
+        }
+        if(pig.getBody()!=null) {
+
+            if (pig.isMarkedDestructed) {
+                pig.safelyDestroy(world);
+                pig.dispose();
+
+            } else {
+                pig.render(spriteBatch);
+            }
+        }
+        if(woodRod.getBody()!=null) {
+
+            if (woodRod.isMarkedDestructed) {
+                woodRod.safelyDestroy(world);
+                woodRod.dispose();
+
+            } else {
+                woodRod.render(spriteBatch);
+            }
+        }
+        if(woodSquare.getBody()!=null) {
+
+            if (woodSquare.isMarkedDestructed) {
+                woodSquare.safelyDestroy(world);
+                woodSquare.dispose();
+
+            } else {
+                woodSquare.render(spriteBatch);
+            }
+        }
+        if(glassSquare.getBody()!=null) {
+
+            if (glassSquare.isMarkedDestructed) {
+                glassSquare.safelyDestroy(world);
+                glassSquare.dispose();
+
+            } else {
+                glassSquare.render(spriteBatch);
+            }
+        }
 
         // Render game objects
-        redBird.render(spriteBatch);
         slingshot.render(spriteBatch);
-        woodRod.render(spriteBatch);
-        woodSquare.render(spriteBatch);
-        glassSquare.render(spriteBatch);
-        pig.render(spriteBatch);
-        redBird.update();
+
+
 
 
 

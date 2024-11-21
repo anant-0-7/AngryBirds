@@ -15,15 +15,20 @@ public class Bird {
     private boolean isLaunched = false;
     // Position of slingshot
     private float maxDragDistance = 2.0f; // Max drag distance in meters
+    int strength;
+    World world;
+    boolean isMarkedDestructed=false;
 
-    public Bird(Texture texture, World world, float x, float y) {
+    public Bird(Texture texture, World world, float x, float y,int strength) {
         this.texture = texture;
-        this.slingshotPosition = new Vector2(x / 100f, y / 100f);
+        this.strength=strength;
+        this.world=world;
+        this.slingshotPosition = new Vector2(400/100f, 450/100f);
 
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(slingshotPosition);
+        bodyDef.position.set(x/100f,y/100f);
 
         body = world.createBody(bodyDef);
 
@@ -36,19 +41,18 @@ public class Bird {
         fixtureDef.density = 1.0f;
 
         body.createFixture(fixtureDef);
+        body.setUserData(this);
         shape.dispose();
     }
 
     public void updatePosition1() {
-        // Get the mouse position in screen coordinates
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.input.getY();
 
-        // Convert screen coordinates to world coordinates (Box2D uses meters, screen uses pixels)
-        float worldX = mouseX / 100f; // Convert to meters
-        float worldY = (Gdx.graphics.getHeight() - mouseY) / 100f; // Invert Y-axis and convert to meters
+        float worldX = mouseX / 100f;
+        float worldY = (Gdx.graphics.getHeight() - mouseY) / 100f;
 
-        // Set the bird's position to the mouse's position in world coordinates
+
         body.setTransform(worldX, worldY, body.getAngle());
     }
 
@@ -76,7 +80,7 @@ public class Bird {
             }
             else if (isDragging) {
                 Vector2 launchVector = slingshotPosition.cpy().sub(body.getPosition());
-                float launchIntensity = launchVector.len() * 10f; // Adjust multiplier for desired force
+                float launchIntensity = launchVector.len() * 10f;
 
                 body.setLinearVelocity(launchVector.nor().scl(launchIntensity));
                 isDragging = false;
@@ -90,14 +94,41 @@ public class Bird {
         spriteBatch.draw(texture, body.getPosition().x * 100 - 50, body.getPosition().y * 100 - 50, 100, 100);
         spriteBatch.end();
     }
+    public void updatePosition(){
+        inSlingshot = true;
+        body.setTransform(400/100f, 450/100f,0);
+    }
+    public int getStrength(){
+        return this.strength;
+    }
+    public Body getBody(){
+        return this.body;
+    }
+    public void markForDestruction() {
+        isMarkedDestructed = true;
+    }
+
+    public boolean isMarkedForDestruction() {
+        return isMarkedDestructed;
+    }
 
     public void resetToSlingshot() {
         inSlingshot = true;
         body.setTransform(slingshotPosition, 0);
         body.setLinearVelocity(0, 0);
     }
+    public void safelyDestroy(World world) {
+        if (isMarkedDestructed && body != null) {
+            world.destroyBody(body);
+            body = null; // Prevent further access
+        }
+    }
 
     public void dispose() {
-        texture.dispose();
+        // Dispose of the texture when the bird is no longer needed
+        if (texture != null) {
+            texture.dispose();
+            texture = null;
+        }
     }
 }

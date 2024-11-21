@@ -7,7 +7,7 @@ public class KingPig extends Pig {
 
 
     public KingPig(World world, float x, float y) {
-        super(new Texture("kingpig.png"), world, x, y);
+        super(new Texture("kingpig.png"), world, x, y,1);
 
     }
 
