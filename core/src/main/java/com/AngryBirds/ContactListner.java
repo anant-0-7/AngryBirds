@@ -40,7 +40,6 @@ public class ContactListner implements ContactListener {
         Bird bird = (birdObj instanceof Bird) ? (Bird)birdObj : (Bird)pigObj;
         Pig pig = (pigObj instanceof Pig) ? (Pig)pigObj : (Pig)birdObj;
 
-        // Reduce pig health
         pig.healthReduce(bird.getStrength());
 
 
@@ -49,16 +48,15 @@ public class ContactListner implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
-        // Not used in this implementation
+
     }
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-        // Not used in this implementation
     }
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
-        // Not used in this implementation
+
     }
 }

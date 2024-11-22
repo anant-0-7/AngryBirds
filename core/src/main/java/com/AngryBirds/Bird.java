@@ -13,7 +13,7 @@ public class Bird {
     private boolean isDragging = false;
     private Vector2 slingshotPosition;
     private boolean isLaunched = false;
-    // Position of slingshot
+
     private float maxDragDistance = 2.0f;
     int strength;
     World world;
@@ -67,7 +67,6 @@ public class Bird {
                     isDragging = true;
                 }
 
-                // Drag bird
                 if (isDragging) {
                     Vector2 dragOffset = currentMousePosition.sub(slingshotPosition);
 
@@ -124,11 +123,6 @@ public class Bird {
         return isMarkedDestructed;
     }
 
-    public void resetToSlingshot() {
-        inSlingshot = true;
-        body.setTransform(slingshotPosition, 0);
-        body.setLinearVelocity(0, 0);
-    }
     public void safelyDestroy(World world) {
         if (isMarkedDestructed && body != null) {
             world.destroyBody(body);

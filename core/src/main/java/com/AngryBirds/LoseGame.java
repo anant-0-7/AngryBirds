@@ -17,7 +17,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class LoseGame extends ScreenAdapter {
     private Stage stage;
-    private Skin skin;
     private Table table;
     private Texture image;
     private Texture pimage;
@@ -39,7 +38,6 @@ public class LoseGame extends ScreenAdapter {
         table.setWidth(stage.getWidth());
         table.align(Align.center|Align.top);
         table.setPosition(0,Gdx.graphics.getHeight());
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
         ImageButton resButton = createLevelButton("rB.png");
         ImageButton quitButton = createLevelButton("QuitGame.png");
         Image img = new Image(image);

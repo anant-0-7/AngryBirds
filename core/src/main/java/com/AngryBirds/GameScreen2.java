@@ -26,7 +26,6 @@ public class GameScreen2 extends ScreenAdapter {
     private RedBird redBird;
     private YellowBird yellowBird;
     private BlackBird blackBird;
-    private WoodRod woodRod;
     private WoodSquare woodSquare1;
     private WoodSquare woodSquare2;
     private GlassSquare glassSquare;
@@ -106,9 +105,6 @@ public class GameScreen2 extends ScreenAdapter {
         birds.add(yellowBird);
         birds.add(blackBird);
 
-        //Texture t=new Texture("woodRod.png");
-
-//        woodRod = new WoodRod(world, 1325, 235,t);
         woodSquare1 = new WoodSquare(world, 1400, 275);
         woodSquare2 = new WoodSquare(world, 1150, 275);
         glassSquare = new GlassSquare(world, 1275, 275);
@@ -142,7 +138,6 @@ public class GameScreen2 extends ScreenAdapter {
 
         world.step(1 / 60f, 6, 2);
 
-        // Render background
         spriteBatch.begin();
         spriteBatch.draw(backgroundTexture, 0, 0, 1920, 1080);
         spriteBatch.end();
@@ -192,16 +187,6 @@ public class GameScreen2 extends ScreenAdapter {
 //            }
 //        }
 
-//        if(woodRod.getBody()!=null) {
-//
-//            if (woodRod.isMarkedDestructed) {
-//                woodRod.safelyDestroy(world);
-//                woodRod.dispose();
-//
-//            } else {
-//                woodRod.render(spriteBatch);
-//            }
-//        }
         if(woodSquare1.getBody()!=null) {
 
             if (woodSquare1.isMarkedDestructed) {

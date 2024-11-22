@@ -26,7 +26,6 @@ public class GameScreen extends ScreenAdapter {
     private RedBird redBird;
     private RedBird redBird2;
     private RedBird redBird3;
-    private WoodRod woodRod;
     private WoodSquare woodSquare;
     private GlassSquare glassSquare;
     private Pig pig;
@@ -103,9 +102,6 @@ public class GameScreen extends ScreenAdapter {
         birds.add(redBird2);
         birds.add(redBird3);
 
-        Texture t=new Texture("woodRod.png");
-
-//        woodRod = new WoodRod(world, 1325, 235,t);
         woodSquare = new WoodSquare(world, 1385, 275);
         glassSquare = new GlassSquare(world, 1275, 275);
         stoneSquare = new StoneSquare(world, 1275, 375);
@@ -185,16 +181,6 @@ public class GameScreen extends ScreenAdapter {
 //            }
 //        }
 
-//        if(woodRod.getBody()!=null) {
-//
-//            if (woodRod.isMarkedDestructed) {
-//                woodRod.safelyDestroy(world);
-//                woodRod.dispose();
-//
-//            } else {
-//                woodRod.render(spriteBatch);
-//            }
-//        }
         if(woodSquare.getBody()!=null) {
 
             if (woodSquare.isMarkedDestructed) {
