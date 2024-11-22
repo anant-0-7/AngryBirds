@@ -22,9 +22,10 @@ public class PausePage extends ScreenAdapter {
     private Texture image;
     private Texture pimage;
     private MainTop game;
-
-    public PausePage(MainTop game) {
+    private int gameNo;
+    public PausePage(MainTop game,int gameNo) {
         this.game = game;
+        this.gameNo=gameNo;
     }
 
     @Override
@@ -69,7 +70,15 @@ public class PausePage extends ScreenAdapter {
         resButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                if(gameNo==1) {
+                    game.setScreen(new GameScreen(game));
+
+                } else if (gameNo==2) {
+                    game.setScreen(new GameScreen2(game));
+                }
+                else{
+                    game.setScreen(new GameScreen2(game));
+                }
             }
         });
         resumeButton.addListener(new ClickListener() {

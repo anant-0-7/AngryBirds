@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
 
-public class GameScreen extends ScreenAdapter {
+public class GameScreen2 extends ScreenAdapter {
     private Stage stage;
     private World world;
     private Box2DDebugRenderer debugRenderer;
@@ -24,19 +24,22 @@ public class GameScreen extends ScreenAdapter {
     private Texture backgroundTexture;
     private Texture pauseButtonTexture, backButtonTexture;
     private RedBird redBird;
-    private RedBird redBird2;
-    private RedBird redBird3;
+    private YellowBird yellowBird;
+    private BlackBird blackBird;
     private WoodRod woodRod;
-    private WoodSquare woodSquare;
+    private WoodSquare woodSquare1;
+    private WoodSquare woodSquare2;
     private GlassSquare glassSquare;
-    private Pig pig;
+    private Pig kingPig;
+    private Pig panPig;
+    private Pig normPig;
     private MainTop game;
     private Slingshot slingshot;
     private StoneSquare stoneSquare;
     ArrayList<Bird> birds;
     int curr=0;
 
-    public GameScreen(MainTop game) {
+    public GameScreen2(MainTop game) {
         this.game = game;
         curr =0;
         birds=new ArrayList<Bird>();
@@ -75,7 +78,7 @@ public class GameScreen extends ScreenAdapter {
         pauseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new PausePage(game,1));
+                game.setScreen(new PausePage(game,2));
             }
         });
 
@@ -97,20 +100,24 @@ public class GameScreen extends ScreenAdapter {
         slingshot = new Slingshot(275, 235);
         redBird = new RedBird(world, 150, 300);
         redBird.updatePosition();
-        redBird2 = new RedBird(world, 100, 300);
-        redBird3 = new RedBird(world, 50, 300);
+        yellowBird = new YellowBird(world, 100, 300);
+        blackBird = new BlackBird(world, 50, 300);
         birds.add(redBird);
-        birds.add(redBird2);
-        birds.add(redBird3);
+        birds.add(yellowBird);
+        birds.add(blackBird);
 
-        Texture t=new Texture("woodRod.png");
+        //Texture t=new Texture("woodRod.png");
 
 //        woodRod = new WoodRod(world, 1325, 235,t);
-        woodSquare = new WoodSquare(world, 1385, 275);
+        woodSquare1 = new WoodSquare(world, 1400, 275);
+        woodSquare2 = new WoodSquare(world, 1150, 275);
         glassSquare = new GlassSquare(world, 1275, 275);
         stoneSquare = new StoneSquare(world, 1275, 375);
 
-        pig = new KingPig(world, 1385, 365);
+        kingPig = new KingPig(world, 1400, 365);
+        panPig=new PanPig(world, 1275, 465);
+        normPig=new NormalPig(world, 1150, 365);
+
 
 
     }
@@ -165,12 +172,12 @@ public class GameScreen extends ScreenAdapter {
             }
         }
         else{
-            if(pig.getBody()!=null){
-                game.setScreen(new LoseGame(game,1));
+            if(kingPig.getBody()!=null || panPig.getBody()!=null || normPig.getBody()!=null){
+                game.setScreen(new LoseGame(game,2));
             }
-        }
 
-        if(pig.getBody()==null){
+        }
+        if(kingPig.getBody()==null && panPig.getBody()==null && normPig.getBody()==null){
             game.setScreen(new GameScreen2(game));
         }
 //        if(redBird.getBody()!=null) {
@@ -195,28 +202,46 @@ public class GameScreen extends ScreenAdapter {
 //                woodRod.render(spriteBatch);
 //            }
 //        }
-        if(woodSquare.getBody()!=null) {
+        if(woodSquare1.getBody()!=null) {
 
-            if (woodSquare.isMarkedDestructed) {
-                if(pig.getBody()!=null) {
-                    pig.setPosition(woodSquare.getBody().getPosition().x * 100, woodSquare.getBody().getPosition().y * 100);
-                    pig.healthReduce(1);
+            if (woodSquare1.isMarkedDestructed) {
+                if(kingPig.getBody()!=null) {
+                    kingPig.setPosition(woodSquare1.getBody().getPosition().x * 100, woodSquare1.getBody().getPosition().y * 100);
+                    kingPig.healthReduce(1);
                 }
-                woodSquare.safelyDestroy(world);
+                woodSquare1.safelyDestroy(world);
 
-                woodSquare.dispose();
+                woodSquare1.dispose();
 
             } else {
-                woodSquare.render(spriteBatch);
+                woodSquare1.render(spriteBatch);
+            }
+        }
+        if(woodSquare2.getBody()!=null) {
+
+            if (woodSquare2.isMarkedDestructed) {
+                if(normPig.getBody()!=null) {
+                    normPig.setPosition(woodSquare2.getBody().getPosition().x * 100, woodSquare2.getBody().getPosition().y * 100);
+                    normPig.healthReduce(1);
+                }
+                woodSquare2.safelyDestroy(world);
+                woodSquare2.dispose();
+
+            } else {
+                woodSquare2.render(spriteBatch);
             }
         }
         if(glassSquare.getBody()!=null) {
 
             if (glassSquare.isMarkedDestructed) {
+                if(panPig.getBody()!=null){
+                    panPig.setPosition(stoneSquare.getBody().getPosition().x*100,stoneSquare.getBody().getPosition().y*100-15);
+                }
                 if(stoneSquare.getBody()!=null) {
                     stoneSquare.healthReduce(1);
                     stoneSquare.setPosition(glassSquare.getBody().getPosition().x * 100, glassSquare.getBody().getPosition().y * 100);
                 }
+
                 glassSquare.safelyDestroy(world);
 
                 glassSquare.dispose();
@@ -229,22 +254,46 @@ public class GameScreen extends ScreenAdapter {
         if(stoneSquare.getBody()!=null) {
 
             if (stoneSquare.isMarkedDestructed) {
+                if(panPig.getBody()!=null) {
+                    panPig.setPosition(stoneSquare.getBody().getPosition().x * 100, stoneSquare.getBody().getPosition().y * 100-15);
+                    panPig.healthReduce(1);
+                }
                 stoneSquare.safelyDestroy(world);
+
                 stoneSquare.dispose();
 
             } else {
                 stoneSquare.render(spriteBatch);
             }
         }
+        if(kingPig.getBody()!=null) {
 
-        if(pig.getBody()!=null) {
-
-            if (pig.isMarkedDestructed) {
-                pig.safelyDestroy(world);
-                pig.dispose();
+            if (kingPig.isMarkedDestructed) {
+                kingPig.safelyDestroy(world);
+                kingPig.dispose();
 
             } else {
-                pig.render(spriteBatch);
+                kingPig.render(spriteBatch);
+            }
+        }
+        if(normPig.getBody()!=null) {
+
+            if (normPig.isMarkedDestructed) {
+                normPig.safelyDestroy(world);
+                normPig.dispose();
+
+            } else {
+                normPig.render(spriteBatch);
+            }
+        }
+        if(panPig.getBody()!=null) {
+
+            if (panPig.isMarkedDestructed) {
+                panPig.safelyDestroy(world);
+                panPig.dispose();
+
+            } else {
+                panPig.render(spriteBatch);
             }
         }
 

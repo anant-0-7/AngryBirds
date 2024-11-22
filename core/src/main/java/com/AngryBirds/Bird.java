@@ -80,7 +80,16 @@ public class Bird {
             }
             else if (isDragging) {
                 Vector2 launchVector = slingshotPosition.cpy().sub(body.getPosition());
-                float launchIntensity = launchVector.len() * 10f;
+                float launchIntensity;
+                if(strength==1){
+                    launchIntensity = launchVector.len() * 5f*strength;
+                } else if (strength==2) {
+                    launchIntensity = launchVector.len() * 6f*strength;
+                }
+                else{
+                    launchIntensity = launchVector.len() * 7f*strength;
+                }
+
 
                 body.setLinearVelocity(launchVector.nor().scl(launchIntensity));
                 isDragging = false;
