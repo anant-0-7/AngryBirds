@@ -10,7 +10,6 @@ public class Slingshot {
 
     public Slingshot(float x, float y) {
         this.texture = new Texture("slingshot.png");
-        // Load the slingshot texture
         this.x = x;
         this.y = y;
     }
@@ -25,11 +24,11 @@ public class Slingshot {
 
     public void render(SpriteBatch spriteBatch) {
         spriteBatch.begin();
-        spriteBatch.draw(texture, x, y, 200, 250); // Draw the slingshot at the specified position
+        spriteBatch.draw(texture, x, y, 200, 250);
         spriteBatch.end();
     }
 
     public void dispose() {
-        texture.dispose(); // Clean up the texture
+        texture.dispose();
     }
 }

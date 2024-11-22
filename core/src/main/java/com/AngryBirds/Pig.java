@@ -76,6 +76,10 @@ public class Pig {
         }
     }
 
+    public void setPosition(float x, float y){
+        body.setTransform(x/100f, y/100f,0);
+    }
+
     public Body getBody() {
         return body; // Expose the Box2D body for collision detection
     }

@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.ArrayList;
+
 public class GameScreen extends ScreenAdapter {
     private Stage stage;
     private World world;
@@ -30,9 +32,14 @@ public class GameScreen extends ScreenAdapter {
     private Pig pig;
     private MainTop game;
     private Slingshot slingshot;
+    private StoneSquare stoneSquare;
+    ArrayList<Bird> birds;
+    int curr=0;
 
     public GameScreen(MainTop game) {
         this.game = game;
+        curr =0;
+        birds=new ArrayList<Bird>();
     }
 
     @Override
@@ -88,29 +95,35 @@ public class GameScreen extends ScreenAdapter {
         createStaticBody(400,350 , 5, 0);
 
         slingshot = new Slingshot(275, 235);
-        redBird = new RedBird(world, 200, 300);
-        redBird2 = new RedBird(world, 150, 300);
-        redBird3 = new RedBird(world, 100, 300);
+        redBird = new RedBird(world, 150, 300);
         redBird.updatePosition();
+        redBird2 = new RedBird(world, 100, 300);
+        redBird3 = new RedBird(world, 50, 300);
+        birds.add(redBird);
+        birds.add(redBird2);
+        birds.add(redBird3);
+
         Texture t=new Texture("woodRod.png");
 
-        woodRod = new WoodRod(world, 1325, 235,t);
-        woodSquare = new WoodSquare(world, 1385, 295);
-        glassSquare = new GlassSquare(world, 1275, 295);
-        pig = new KingPig(world, 1330, 385);
+//        woodRod = new WoodRod(world, 1325, 235,t);
+        woodSquare = new WoodSquare(world, 1385, 275);
+        glassSquare = new GlassSquare(world, 1275, 275);
+        stoneSquare = new StoneSquare(world, 1275, 375);
+
+        pig = new KingPig(world, 1385, 365);
 
 
     }
 
     private void createStaticBody(float x, float y, float width, float height) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(x / 100f, y / 100f); // Convert to meters
+        bodyDef.position.set(x / 100f, y / 100f);
         bodyDef.type = BodyDef.BodyType.StaticBody;
 
         Body body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 200f, height / 200f); // Convert to meters
+        shape.setAsBox(width / 200f, height / 200f);
 
         body.createFixture(shape, 0.0f);
         shape.dispose();
@@ -120,24 +133,48 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Step the physics simulation
         world.step(1 / 60f, 6, 2);
 
         // Render background
         spriteBatch.begin();
         spriteBatch.draw(backgroundTexture, 0, 0, 1920, 1080);
         spriteBatch.end();
-        if(redBird.getBody()!=null) {
 
-            if (redBird.isMarkedDestructed) {
-                redBird.safelyDestroy(world);
-                redBird.dispose();
+        if(curr<birds.size()){
 
-            } else {
-                redBird.update();
-                redBird.render(spriteBatch);
+            int x = curr+1;
+            while(x<birds.size()){
+                birds.get(x).render(spriteBatch);
+                x++;
+            }
+
+            if(birds.get(curr).getBody()!=null) {
+
+                if (birds.get(curr).isMarkedDestructed) {
+                    birds.get(curr).safelyDestroy(world);
+                    birds.get(curr).dispose();
+                    curr++;
+                    if(curr<birds.size()){
+                        birds.get(curr).updatePosition();
+                    }
+
+                } else {
+                    birds.get(curr).update();
+                    birds.get(curr).render(spriteBatch);
+                }
             }
         }
+//        if(redBird.getBody()!=null) {
+//
+//            if (redBird.isMarkedDestructed) {
+//                redBird.safelyDestroy(world);
+//                redBird.dispose();
+//
+//            } else {
+//                redBird.updatePosition1();
+//                redBird.render(spriteBatch);
+//            }
+//        }
         if(pig.getBody()!=null) {
 
             if (pig.isMarkedDestructed) {
@@ -148,20 +185,23 @@ public class GameScreen extends ScreenAdapter {
                 pig.render(spriteBatch);
             }
         }
-        if(woodRod.getBody()!=null) {
-
-            if (woodRod.isMarkedDestructed) {
-                woodRod.safelyDestroy(world);
-                woodRod.dispose();
-
-            } else {
-                woodRod.render(spriteBatch);
-            }
-        }
+//        if(woodRod.getBody()!=null) {
+//
+//            if (woodRod.isMarkedDestructed) {
+//                woodRod.safelyDestroy(world);
+//                woodRod.dispose();
+//
+//            } else {
+//                woodRod.render(spriteBatch);
+//            }
+//        }
         if(woodSquare.getBody()!=null) {
 
             if (woodSquare.isMarkedDestructed) {
+
+                pig.setPosition(woodSquare.getBody().getPosition().x*100,woodSquare.getBody().getPosition().y*100);
                 woodSquare.safelyDestroy(world);
+                pig.healthReduce(1);
                 woodSquare.dispose();
 
             } else {
@@ -171,7 +211,10 @@ public class GameScreen extends ScreenAdapter {
         if(glassSquare.getBody()!=null) {
 
             if (glassSquare.isMarkedDestructed) {
+                stoneSquare.healthReduce(1);
+                stoneSquare.setPosition(glassSquare.getBody().getPosition().x*100,glassSquare.getBody().getPosition().y*100);
                 glassSquare.safelyDestroy(world);
+
                 glassSquare.dispose();
 
             } else {
@@ -179,7 +222,17 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
-        // Render game objects
+        if(stoneSquare.getBody()!=null) {
+
+            if (stoneSquare.isMarkedDestructed) {
+                stoneSquare.safelyDestroy(world);
+                stoneSquare.dispose();
+
+            } else {
+                stoneSquare.render(spriteBatch);
+            }
+        }
+
         slingshot.render(spriteBatch);
 
 

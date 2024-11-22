@@ -10,11 +10,11 @@ public class Bird {
     private Body body;
     private Texture texture;
     private boolean inSlingshot = true;
-    private boolean isDragging = false; // Tracks if bird is being dragged
+    private boolean isDragging = false;
     private Vector2 slingshotPosition;
     private boolean isLaunched = false;
     // Position of slingshot
-    private float maxDragDistance = 2.0f; // Max drag distance in meters
+    private float maxDragDistance = 2.0f;
     int strength;
     World world;
     boolean isMarkedDestructed=false;
@@ -91,6 +91,9 @@ public class Bird {
 
     public void render(SpriteBatch spriteBatch) {
         spriteBatch.begin();
+        if(body.getPosition().x*100>1920 || body.getPosition().x*100<0 || body.getPosition().y*100>1080 || body.getPosition().y*100<0){
+            markForDestruction();
+        }
         spriteBatch.draw(texture, body.getPosition().x * 100 - 50, body.getPosition().y * 100 - 50, 100, 100);
         spriteBatch.end();
     }
@@ -120,12 +123,11 @@ public class Bird {
     public void safelyDestroy(World world) {
         if (isMarkedDestructed && body != null) {
             world.destroyBody(body);
-            body = null; // Prevent further access
+            body = null;
         }
     }
 
     public void dispose() {
-        // Dispose of the texture when the bird is no longer needed
         if (texture != null) {
             texture.dispose();
             texture = null;

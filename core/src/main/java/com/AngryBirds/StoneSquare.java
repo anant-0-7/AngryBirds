@@ -6,6 +6,6 @@ import com.badlogic.gdx.physics.box2d.World;
 public class StoneSquare extends Block {
 
     public StoneSquare(World world, float x, float y){
-        super(world, new Texture("stoneSquare.png") , x, y, 50, 50,5);
+        super(world, new Texture("stoneSquare.png") , x, y, 50, 50,1);
     }
 }

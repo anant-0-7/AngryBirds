@@ -13,34 +13,28 @@ public abstract class Block {
         this.texture = texture;
         this.health=health;
 
-        // Create body definition
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody; // Use Kinematic or Dynamic based on interaction
-        bodyDef.position.set(x / 100f, y / 100f); // Position in meters
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.position.set(x / 100f, y / 100f);
 
-        // Create the body
         body = world.createBody(bodyDef);
 
-        // Define the block's shape
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 200f, height / 200f); // Half-width and half-height in meters
+        shape.setAsBox(width / 200f, height / 200f);
 
-        // Create the fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 1.0f;
 
         body.createFixture(fixtureDef);
         body.setUserData(this);
-        shape.dispose(); // Dispose shape to free memory
+        shape.dispose();
     }
 
     public void render(SpriteBatch batch) {
-        // Get the position and rotation from the Box2D body
         float x = body.getPosition().x * 100 - texture.getWidth() / 2f;
         float y = body.getPosition().y * 100 - texture.getHeight() / 2f;
 
-        // Draw the texture with position and rotation
         batch.begin();
         batch.draw(texture, x, y, texture.getWidth(), texture.getHeight());
         batch.end();
@@ -65,12 +59,15 @@ public abstract class Block {
     public void safelyDestroy(World world) {
         if (isMarkedDestructed && body != null) {
             world.destroyBody(body);
-            body = null; // Prevent further access
+            body = null;
         }
     }
 
+    public void setPosition(float x, float y){
+        body.setTransform(x/100f, y/100f,0);
+    }
+
     public void dispose() {
-        // Dispose of the texture when the bird is no longer needed
         if (texture != null) {
             texture.dispose();
             texture = null;

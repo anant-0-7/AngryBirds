@@ -10,11 +10,9 @@ public class ContactListner implements ContactListener {
         Fixture fixtureB = contact.getFixtureB();
 
 
-        // Implement collision logic
         Object userDataA = fixtureA.getBody().getUserData();
         Object userDataB = fixtureB.getBody().getUserData();
 
-        // Check for bird collision with blocks or pigs
         if ((userDataA instanceof Bird && userDataB instanceof Block) ||
             (userDataA instanceof Block && userDataB instanceof Bird)) {
             System.out.println("Hello Bird");
@@ -32,10 +30,8 @@ public class ContactListner implements ContactListener {
         Bird bird = (birdObj instanceof Bird) ? (Bird)birdObj : (Bird)blockObj;
         Block block = (blockObj instanceof Block) ? (Block)blockObj : (Block)birdObj;
 
-        // Reduce block health
         block.healthReduce(bird.getStrength());
 
-        // Destroy bird
 
         bird.markForDestruction();
     }
