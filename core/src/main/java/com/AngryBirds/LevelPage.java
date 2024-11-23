@@ -70,6 +70,13 @@ public class LevelPage extends ScreenAdapter {
             }
         });
 
+        levelThree.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new GameScreen3(game));
+            }
+        });
+
         stage.addActor(backgroundImage);
         stage.addActor(headingImage);
         stage.addActor(table);
