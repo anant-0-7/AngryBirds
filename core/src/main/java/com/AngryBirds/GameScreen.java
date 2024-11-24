@@ -122,35 +122,39 @@ public class GameScreen extends ScreenAdapter {
             glassSquare = saveGame.getGlassSquare();
             pig = saveGame.getPig();
             stoneSquare = saveGame.getStoneSquare();
-            if(saveGame.getRedBird().getBody()!=null){
+            redBird=saveGame.getRedBird();
+            redBird2=saveGame.getRedBird2();
+            redBird3=saveGame.getRedBird3();
+
+            if(!saveGame.getRedBird().isMarkedDestructed){
                 redBird=new RedBird(world, 150, 300);
             }
 
-            if(saveGame.getRedBird2().getBody()!=null){
+            if(!saveGame.getRedBird2().isMarkedDestructed){
                 redBird2=new RedBird(world, 100, 300);
             }
 
-            if(saveGame.getRedBird3().getBody()!=null){
+            if(!saveGame.getRedBird3().isMarkedDestructed){
                 redBird3= new RedBird(world, 50, 300);
             }
 
-            if(saveGame.getPig().getBody()!=null){
-                pig=new KingPig(world, saveGame.getPig().getBody().getPosition().x*100, saveGame.getPig().getBody().getPosition().y*100);
+            if(!saveGame.getPig().isMarkedDestructed){
+                pig=new KingPig(world, saveGame.getPig().getX(), saveGame.getPig().getY());
                 pig.changeState(saveGame.getPig());
             }
 
-            if(saveGame.getGlassSquare().getBody()!=null){
-                glassSquare=new GlassSquare(world, saveGame.getGlassSquare().getBody().getPosition().x*100, saveGame.getGlassSquare().getBody().getPosition().y*100);
+            if(!saveGame.getGlassSquare().isMarkedDestructed){
+                glassSquare=new GlassSquare(world, saveGame.getGlassSquare().getX(), saveGame.getGlassSquare().getY());
                 glassSquare.changeState(saveGame.getGlassSquare());
             }
 
-            if(saveGame.getWoodSquare().getBody()!=null){
-                woodSquare=new WoodSquare(world, saveGame.getWoodSquare().getBody().getPosition().x*100, saveGame.getWoodSquare().getBody().getPosition().y*100);
+            if(!saveGame.getWoodSquare().isMarkedDestructed){
+                woodSquare=new WoodSquare(world, saveGame.getWoodSquare().getX(), saveGame.getWoodSquare().getY());
                 woodSquare.changeState(saveGame.getWoodSquare());
             }
 
-            if(saveGame.getStoneSquare().getBody()!=null){
-                stoneSquare=new StoneSquare(world, saveGame.getStoneSquare().getBody().getPosition().x*100, saveGame.getStoneSquare().getBody().getPosition().y*100);
+            if(!saveGame.getStoneSquare().isMarkedDestructed){
+                stoneSquare=new StoneSquare(world, saveGame.getStoneSquare().getX(), saveGame.getStoneSquare().getY());
                 stoneSquare.changeState(saveGame.getStoneSquare());
             }
 
@@ -160,7 +164,8 @@ public class GameScreen extends ScreenAdapter {
             birds.add(redBird);
             birds.add(redBird2);
             birds.add(redBird3);
-            if(birds.get(curr)!=null){
+            if(birds.get(curr).getBody()!=null){
+                System.out.println("the curr"+curr);
                 birds.get(curr).updatePosition();
             }
         }

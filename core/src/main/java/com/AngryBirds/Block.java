@@ -4,14 +4,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 
-public abstract class Block {
-    private  Texture texture;
-    private Body body;
+import java.io.Serializable;
+
+public abstract class Block implements Serializable {
+    transient private  Texture texture;
+    transient private Body body;
     int health;
     boolean isMarkedDestructed=false;
+    float x;
+    float y;
+
     public Block(World world, Texture texture, float x, float y, float width, float height,int health) {
         this.texture = texture;
         this.health=health;
+        this.x=x;
+        this.y=y;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
@@ -64,6 +71,8 @@ public abstract class Block {
     }
 
     public void setPosition(float x, float y){
+        this.x=x;
+        this.y=y;
         body.setTransform(x/100f, y/100f,0);
     }
 
@@ -83,5 +92,13 @@ public abstract class Block {
     public void changeState(Block oldBlock){
         this.health=oldBlock.health;
         this.isMarkedDestructed= oldBlock.isMarkedDestructed;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getX() {
+        return x;
     }
 }

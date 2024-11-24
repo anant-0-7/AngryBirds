@@ -6,17 +6,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.Gdx;
 
-public class Bird {
-    private Body body;
-    private Texture texture;
+import java.io.Serializable;
+
+public class Bird implements Serializable {
+    transient private Body body;
+    transient private Texture texture;
     private boolean inSlingshot = true;
     private boolean isDragging = false;
-    private Vector2 slingshotPosition;
+    transient private Vector2 slingshotPosition;
     private boolean isLaunched = false;
 
     private float maxDragDistance = 2.0f;
     int strength;
-    World world;
+    transient World world;
     boolean isMarkedDestructed=false;
 
     public Bird(Texture texture, World world, float x, float y,int strength) {
@@ -83,10 +85,10 @@ public class Bird {
                 if(strength==1){
                     launchIntensity = launchVector.len() * 5f*strength;
                 } else if (strength==2) {
-                    launchIntensity = launchVector.len() * 6f*strength;
+                    launchIntensity = launchVector.len() * 5.5f*strength;
                 }
                 else{
-                    launchIntensity = launchVector.len() * 7f*strength;
+                    launchIntensity = launchVector.len() * 6f*strength;
                 }
 
 

@@ -14,6 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 public class PausePage extends ScreenAdapter {
     private Stage stage;
     private Skin skin;
@@ -100,6 +105,19 @@ public class PausePage extends ScreenAdapter {
                 }
             }
         });
+
+        saveButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                File file = new File("GameData.txt");
+                try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+                    oos.writeObject(saveG);
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to save game to file", e);
+                }
+            }
+        });
+
         stage.addActor(img);
         stage.addActor(pimg);
         stage.addActor(table);

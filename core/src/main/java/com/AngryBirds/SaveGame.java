@@ -1,9 +1,11 @@
 package com.AngryBirds;
 
-public class SaveGame {
+import java.io.Serializable;
 
-    int level;
-    int curr;
+public class SaveGame implements Serializable {
+
+    protected int level;
+    protected int curr;
 
     public int getLevel() {
         return level;

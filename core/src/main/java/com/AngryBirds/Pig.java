@@ -4,17 +4,23 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 
-public class Pig {
-    private Body body;
-    private Texture texture;
+import java.io.Serializable;
+
+public class Pig implements Serializable {
+    transient private Body body;
+    transient private Texture texture;
     int health;
-    World world;
+    transient World world;
     boolean isMarkedDestructed=false;
+    float x;
+    float y;
 
     public Pig(Texture texture, World world, float x, float y,int health) {
         this.texture = texture;
         this.health=health;
         this.world=world;
+        this.x=x;
+        this.y=y;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
@@ -75,6 +81,8 @@ public class Pig {
     }
 
     public void setPosition(float x, float y){
+        this.x=x;
+        this.y=y;
         body.setTransform(x/100f, y/100f,0);
     }
 
@@ -87,5 +95,13 @@ public class Pig {
     public void changeState(Pig oldPig){
         this.health=oldPig.health;
         this.isMarkedDestructed= oldPig.isMarkedDestructed;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
     }
 }

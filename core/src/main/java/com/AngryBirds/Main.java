@@ -17,6 +17,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ScreenAdapter {
 
@@ -58,6 +63,35 @@ public class Main extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
+            }
+        });
+
+        loadButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                File file = new File("GameData.txt");
+
+                if (file.exists()) {
+                    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+                        SaveGame sgame = (SaveGame) ois.readObject();
+                        int level=sgame.getLevel();
+                        if(level==1){
+                            game.setScreen(new GameScreen(game,(SaveGame1) sgame));
+                        } else if (level==2) {
+                            game.setScreen(new GameScreen2(game,(SaveGame2) sgame));
+                        }
+                        else{
+                            game.setScreen(new GameScreen3(game,(SaveGame3) sgame));
+                        }
+
+
+                    } catch (IOException | ClassNotFoundException e) {
+                        throw new RuntimeException("Failed to initialize game from file", e);
+                    }
+                }
+                else {
+                    game.setScreen(new GameScreen(game,null));
+                }
             }
         });
 
