@@ -60,20 +60,20 @@ public class LevelPage extends ScreenAdapter {
         levelOne.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game, null));
             }
         });
         levelTwo.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen2(game));
+                game.setScreen(new GameScreen3(game, null));
             }
         });
 
         levelThree.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen3(game));
+                game.setScreen(new GameScreen2(game, null));
             }
         });
 

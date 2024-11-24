@@ -22,10 +22,13 @@ public class PausePage extends ScreenAdapter {
     private Texture pimage;
     private MainTop game;
     private int gameNo;
-    public PausePage(MainTop game,int gameNo) {
+    private SaveGame saveG;
+    public PausePage(MainTop game, SaveGame saveGame) {
         this.game = game;
-        this.gameNo=gameNo;
+        this.gameNo=saveGame.getLevel();
+        this.saveG=saveGame;
     }
+
 
     @Override
     public void show() {
@@ -70,20 +73,30 @@ public class PausePage extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(gameNo==1) {
-                    game.setScreen(new GameScreen(game));
+                    game.setScreen(new GameScreen(game, null));
 
                 } else if (gameNo==2) {
-                    game.setScreen(new GameScreen2(game));
+                    game.setScreen(new GameScreen2(game, null));
                 }
                 else{
-                    game.setScreen(new GameScreen2(game));
+                    game.setScreen(new GameScreen3(game, null));
                 }
             }
         });
         resumeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+
+
+                if(gameNo==1) {
+                    game.setScreen(new GameScreen(game, (SaveGame1) saveG));
+
+                } else if (gameNo==2) {
+                    game.setScreen(new GameScreen2(game, (SaveGame2) saveG));
+                }
+                else{
+                    game.setScreen(new GameScreen3(game, (SaveGame3) saveG));
+                }
             }
         });
         stage.addActor(img);

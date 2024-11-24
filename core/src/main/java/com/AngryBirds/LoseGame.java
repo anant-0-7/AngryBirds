@@ -58,13 +58,13 @@ public class LoseGame extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(gameNo==1) {
-                    game.setScreen(new GameScreen(game));
+                    game.setScreen(new GameScreen(game, null));
 
                 } else if (gameNo==2) {
-                    game.setScreen(new GameScreen2(game));
+                    game.setScreen(new GameScreen2(game, null));
                 }
                 else{
-                    game.setScreen(new GameScreen2(game));
+                    game.setScreen(new GameScreen3(game, null));
                 }
             }
         });

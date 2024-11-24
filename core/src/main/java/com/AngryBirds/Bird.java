@@ -130,6 +130,14 @@ public class Bird {
         }
     }
 
+    public void resetState() {
+        isDragging = false;
+        isLaunched = false;
+        inSlingshot = true;
+        body.setLinearVelocity(0, 0);
+        body.setAngularVelocity(0);
+    }
+
     public void dispose() {
         if (texture != null) {
             texture.dispose();

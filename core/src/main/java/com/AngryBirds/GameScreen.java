@@ -33,11 +33,14 @@ public class GameScreen extends ScreenAdapter {
     private Slingshot slingshot;
     private StoneSquare stoneSquare;
     ArrayList<Bird> birds;
+    SaveGame1 saveGame;
     int curr=0;
 
-    public GameScreen(MainTop game) {
+    public GameScreen(MainTop game, SaveGame1 saveGame) {
         this.game = game;
-        curr =0;
+        this.saveGame=saveGame;
+        if(saveGame ==null)curr =0;
+        else curr=saveGame.getCurr();
         birds=new ArrayList<Bird>();
     }
 
@@ -74,7 +77,7 @@ public class GameScreen extends ScreenAdapter {
         pauseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new PausePage(game,1));
+                game.setScreen(new PausePage(game, new SaveGame1(redBird, redBird2, redBird3, woodSquare, glassSquare, pig, stoneSquare, curr)));
             }
         });
 
@@ -94,19 +97,40 @@ public class GameScreen extends ScreenAdapter {
         createStaticBody(400,350 , 5, 0);
 
         slingshot = new Slingshot(275, 235);
-        redBird = new RedBird(world, 150, 300);
-        redBird.updatePosition();
-        redBird2 = new RedBird(world, 100, 300);
-        redBird3 = new RedBird(world, 50, 300);
-        birds.add(redBird);
-        birds.add(redBird2);
-        birds.add(redBird3);
+        if(saveGame==null){
+            redBird = new RedBird(world, 150, 300);
+            redBird.updatePosition();
+            redBird2 = new RedBird(world, 100, 300);
+            redBird3 = new RedBird(world, 50, 300);
+            birds.add(redBird);
+            birds.add(redBird2);
+            birds.add(redBird3);
 
-        woodSquare = new WoodSquare(world, 1385, 275);
-        glassSquare = new GlassSquare(world, 1275, 275);
-        stoneSquare = new StoneSquare(world, 1275, 375);
+            woodSquare = new WoodSquare(world, 1385, 275);
+            glassSquare = new GlassSquare(world, 1275, 275);
+            stoneSquare = new StoneSquare(world, 1275, 375);
 
-        pig = new KingPig(world, 1385, 365);
+            pig = new KingPig(world, 1385, 365);
+
+        }
+
+        else{
+            redBird = saveGame.getRedBird();
+            redBird2 = saveGame.getRedBird2();
+            redBird3 = saveGame.getRedBird3();
+//            if(redBird.getBody()!=null)redBird.resetState();
+//            if(redBird2.getBody()!=null)redBird2.resetState();
+//            if(redBird3.getBody()!=null)redBird3.resetState();
+
+            woodSquare = saveGame.getWoodSquare();
+            glassSquare = saveGame.getGlassSquare();
+            pig = saveGame.getPig();
+            stoneSquare = saveGame.getStoneSquare();
+            birds.add(redBird);
+            birds.add(redBird2);
+            birds.add(redBird3);
+        }
+
 
 
     }
@@ -154,7 +178,8 @@ public class GameScreen extends ScreenAdapter {
                         birds.get(curr).updatePosition();
                     }
 
-                } else {
+                }
+                else {
                     birds.get(curr).update();
                     birds.get(curr).render(spriteBatch);
                 }
@@ -167,7 +192,7 @@ public class GameScreen extends ScreenAdapter {
         }
 
         if(pig.getBody()==null){
-            game.setScreen(new GameScreen2(game));
+            game.setScreen(new GameScreen2(game, null));
         }
 //        if(redBird.getBody()!=null) {
 //
