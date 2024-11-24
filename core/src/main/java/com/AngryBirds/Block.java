@@ -77,4 +77,11 @@ public abstract class Block {
     public Body getBody() {
         return body;
     }
+    public void setBody(Body body) {
+        this.body=body;
+    }
+    public void changeState(Block oldBlock){
+        this.health=oldBlock.health;
+        this.isMarkedDestructed= oldBlock.isMarkedDestructed;
+    }
 }

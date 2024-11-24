@@ -30,7 +30,7 @@ public class Bird {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x/100f,y/100f);
 
-        body = world.createBody(bodyDef);
+        this.body = world.createBody(bodyDef);
 
 
         CircleShape shape = new CircleShape();
@@ -40,8 +40,8 @@ public class Bird {
         fixtureDef.shape = shape;
         fixtureDef.density = 1.0f;
 
-        body.createFixture(fixtureDef);
-        body.setUserData(this);
+        this.body.createFixture(fixtureDef);
+        this.body.setUserData(this);
         shape.dispose();
     }
 
@@ -144,4 +144,5 @@ public class Bird {
             texture = null;
         }
     }
+
 }

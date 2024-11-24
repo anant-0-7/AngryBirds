@@ -89,7 +89,8 @@ public class PausePage extends ScreenAdapter {
 
 
                 if(gameNo==1) {
-                    game.setScreen(new GameScreen(game, (SaveGame1) saveG));
+                    GameScreen g=new GameScreen(game, (SaveGame1) saveG);
+                    game.setScreen(g);
 
                 } else if (gameNo==2) {
                     game.setScreen(new GameScreen2(game, (SaveGame2) saveG));

@@ -81,4 +81,11 @@ public class Pig {
     public Body getBody() {
         return body;
     }
+    public void setBody(Body body) {
+        this.body=body;
+    }
+    public void changeState(Pig oldPig){
+        this.health=oldPig.health;
+        this.isMarkedDestructed= oldPig.isMarkedDestructed;
+    }
 }

@@ -189,7 +189,7 @@ public class GameScreen3 extends ScreenAdapter {
         }
         else{
             if(kingPig.getBody()!=null || panPig.getBody()!=null || normPig.getBody()!=null){
-                game.setScreen(new LoseGame(game,2));
+                game.setScreen(new LoseGame(game,3));
             }
 
         }

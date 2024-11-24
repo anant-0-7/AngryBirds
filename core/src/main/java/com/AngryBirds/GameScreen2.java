@@ -131,6 +131,9 @@ public class GameScreen2 extends ScreenAdapter {
             stoneSquare = saveGame.getStoneSquare();
             pig = saveGame.getPig();
             pig1 = saveGame.getPig1();
+            birds.add(redBird);
+            birds.add(yellowBird);
+            birds.add(yellowBird2);
         }
 
 
@@ -187,7 +190,7 @@ public class GameScreen2 extends ScreenAdapter {
         }
         else{
             if(pig.getBody()!=null){
-                game.setScreen(new LoseGame(game,1));
+                game.setScreen(new LoseGame(game,2));
             }
         }
 
