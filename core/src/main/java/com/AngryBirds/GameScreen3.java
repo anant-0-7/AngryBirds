@@ -120,9 +120,6 @@ public class GameScreen3 extends ScreenAdapter {
             normPig=new NormalPig(world, 1150, 365);
         }
         else{
-            redBird = saveGame.getRedBird();
-            yellowBird = saveGame.getYellowBird();
-            blackBird = saveGame.getBlackBird();
             woodSquare1 = saveGame.getWoodSquare1();
             woodSquare2 = saveGame.getWoodSquare2();
             glassSquare = saveGame.getGlassSquare();
@@ -130,9 +127,62 @@ public class GameScreen3 extends ScreenAdapter {
             kingPig = saveGame.getKingPig();
             panPig = saveGame.getPanPig();
             normPig = saveGame.getNormPig();
+
+            if(saveGame.getRedBird().getBody()!=null){
+                redBird=new RedBird(world, 150, 300);
+            }
+
+            if(saveGame.getYellowBird().getBody()!=null){
+                yellowBird=new YellowBird(world, 100, 300);
+            }
+
+            if(saveGame.getBlackBird().getBody()!=null){
+                blackBird= new BlackBird(world, 50, 300);
+            }
+
+            if(saveGame.getKingPig().getBody()!=null){
+                kingPig=new KingPig(world, saveGame.getKingPig().getBody().getPosition().x*100, saveGame.getKingPig().getBody().getPosition().y*100);
+                kingPig.changeState(saveGame.getKingPig());
+            }
+
+            if(saveGame.getPanPig().getBody()!=null){
+                panPig=new PanPig(world, saveGame.getPanPig().getBody().getPosition().x*100, saveGame.getPanPig().getBody().getPosition().y*100);
+                panPig.changeState(saveGame.getPanPig());
+            }
+
+            if(saveGame.getNormPig().getBody()!=null){
+                normPig=new NormalPig(world, saveGame.getNormPig().getBody().getPosition().x*100, saveGame.getNormPig().getBody().getPosition().y*100);
+                normPig.changeState(saveGame.getNormPig());
+            }
+
+            if(saveGame.getGlassSquare().getBody()!=null){
+                glassSquare=new GlassSquare(world, saveGame.getGlassSquare().getBody().getPosition().x*100, saveGame.getGlassSquare().getBody().getPosition().y*100);
+                glassSquare.changeState(saveGame.getGlassSquare());
+            }
+
+            if(saveGame.getWoodSquare1().getBody()!=null){
+                woodSquare1=new WoodSquare(world, saveGame.getWoodSquare1().getBody().getPosition().x*100, saveGame.getWoodSquare1().getBody().getPosition().y*100);
+                woodSquare1.changeState(saveGame.getWoodSquare1());
+            }
+
+            if(saveGame.getWoodSquare2().getBody()!=null){
+                woodSquare2=new WoodSquare(world, saveGame.getWoodSquare2().getBody().getPosition().x*100, saveGame.getWoodSquare2().getBody().getPosition().y*100);
+                woodSquare2.changeState(saveGame.getWoodSquare2());
+            }
+
+            if(saveGame.getStoneSquare().getBody()!=null){
+                stoneSquare=new StoneSquare(world, saveGame.getStoneSquare().getBody().getPosition().x*100, saveGame.getStoneSquare().getBody().getPosition().y*100);
+                stoneSquare.changeState(saveGame.getStoneSquare());
+            }
+
             birds.add(redBird);
             birds.add(yellowBird);
             birds.add(blackBird);
+
+            if(birds.get(curr)!=null){
+                birds.get(curr).updatePosition();
+            }
+
         }
 
 
@@ -191,22 +241,12 @@ public class GameScreen3 extends ScreenAdapter {
             if(kingPig.getBody()!=null || panPig.getBody()!=null || normPig.getBody()!=null){
                 game.setScreen(new LoseGame(game,3));
             }
+            else{
+                game.setScreen(new GameScreen3(game, null));
+            }
 
         }
-        if(kingPig.getBody()==null && panPig.getBody()==null && normPig.getBody()==null){
-            game.setScreen(new GameScreen3(game, null));
-        }
-//        if(redBird.getBody()!=null) {
-//
-//            if (redBird.isMarkedDestructed) {
-//                redBird.safelyDestroy(world);
-//                redBird.dispose();
-//
-//            } else {
-//                redBird.updatePosition1();
-//                redBird.render(spriteBatch);
-//            }
-//        }
+
 
         if(woodSquare1.getBody()!=null) {
 
