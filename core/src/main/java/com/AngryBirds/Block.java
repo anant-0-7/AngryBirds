@@ -6,13 +6,17 @@ import com.badlogic.gdx.physics.box2d.*;
 
 import java.io.Serializable;
 
-public abstract class Block implements Serializable {
+public class Block implements Serializable {
     transient private  Texture texture;
     transient private Body body;
     int health;
     boolean isMarkedDestructed=false;
     float x;
     float y;
+
+    public Block(World world, float x, float y, float width, float height,int health) {
+        this(world, null, x, y, width, height, health);
+    }
 
     public Block(World world, Texture texture, float x, float y, float width, float height,int health) {
         this.texture = texture;

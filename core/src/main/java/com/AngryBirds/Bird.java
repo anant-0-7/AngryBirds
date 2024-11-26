@@ -21,6 +21,10 @@ public class Bird implements Serializable {
     transient World world;
     boolean isMarkedDestructed=false;
 
+    public Bird(World world, float x, float y, int strength) {
+        this(null, world, x, y, strength); // Pass `null` for texture
+    }
+
     public Bird(Texture texture, World world, float x, float y,int strength) {
         this.texture = texture;
         this.strength=strength;
@@ -132,13 +136,6 @@ public class Bird implements Serializable {
         }
     }
 
-    public void resetState() {
-        isDragging = false;
-        isLaunched = false;
-        inSlingshot = true;
-        body.setLinearVelocity(0, 0);
-        body.setAngularVelocity(0);
-    }
 
     public void dispose() {
         if (texture != null) {

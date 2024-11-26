@@ -15,6 +15,10 @@ public class Pig implements Serializable {
     float x;
     float y;
 
+    public Pig(World world, float x, float y, int health) {
+        this(null, world, x, y, health); // Pass `null` for texture
+    }
+
     public Pig(Texture texture, World world, float x, float y,int health) {
         this.texture = texture;
         this.health=health;
@@ -52,6 +56,11 @@ public class Pig implements Serializable {
     }
 
     public void render(SpriteBatch spriteBatch) {
+
+        if(this.texture==null){
+            return;
+        }
+
         spriteBatch.begin();
         spriteBatch.draw(texture, body.getPosition().x * 100 - 40, body.getPosition().y * 100 - 40, 80, 80);
         spriteBatch.end();
@@ -103,5 +112,9 @@ public class Pig implements Serializable {
 
     public float getY() {
         return y;
+    }
+
+    public int getHealth() {
+        return health;
     }
 }

@@ -3,7 +3,7 @@ package com.AngryBirds;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class ContactListner implements ContactListener {
-    World world;
+    public World world;
     @Override
     public void beginContact(Contact contact) {
         Fixture fixtureA = contact.getFixtureA();
