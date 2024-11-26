@@ -85,10 +85,10 @@ public class Bird implements Serializable {
             else if (isDragging) {
                 Vector2 launchVector = slingshotPosition.cpy().sub(body.getPosition());
                 float launchIntensity;
-                if(strength==1){
-                    launchIntensity = launchVector.len() * 5f*strength;
-                } else if (strength==2) {
-                    launchIntensity = launchVector.len() * 5.5f*strength;
+                if(strength==3){
+                    launchIntensity = launchVector.len() * 3f*strength;
+                } else if (strength==5) {
+                    launchIntensity = launchVector.len() * 1f*strength;
                 }
                 else{
                     launchIntensity = launchVector.len() * 6f*strength;

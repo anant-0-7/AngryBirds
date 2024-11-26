@@ -7,6 +7,6 @@ public class BlackBird extends Bird {
 
     public BlackBird(World world, float x, float y) {
 
-        super(new Texture("blackbird.png"),world, x, y,3);
+        super(new Texture("blackbird.png"),world, x, y,1);
     }
 }
