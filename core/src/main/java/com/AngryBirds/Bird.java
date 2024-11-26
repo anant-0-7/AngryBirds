@@ -11,12 +11,10 @@ import java.io.Serializable;
 public class Bird implements Serializable {
     transient private Body body;
     transient private Texture texture;
-    private boolean inSlingshot = true;
     private boolean isDragging = false;
     transient private Vector2 slingshotPosition;
     private boolean isLaunched = false;
 
-    private float maxDragDistance = 2.0f;
     int strength;
     transient World world;
     boolean isMarkedDestructed=false;
@@ -69,6 +67,7 @@ public class Bird implements Serializable {
                 float mouseY = (Gdx.graphics.getHeight() - Gdx.input.getY()) / 100f;
                 Vector2 currentMousePosition = new Vector2(mouseX, mouseY);
 
+                float maxDragDistance = 2.0f;
                 if (!isDragging && currentMousePosition.dst(slingshotPosition) <= maxDragDistance) {
                     isDragging = true;
                 }
@@ -112,7 +111,6 @@ public class Bird implements Serializable {
         spriteBatch.end();
     }
     public void updatePosition(){
-        inSlingshot = true;
         body.setTransform(400/100f, 450/100f,0);
     }
     public int getStrength(){
